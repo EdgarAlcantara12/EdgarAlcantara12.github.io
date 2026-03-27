@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 60" width="260" height="60">
+  <defs>
+    <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="60%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Hexagon shape -->
+  <polygon
+    points="30,4 52,17 52,43 30,56 8,43 8,17"
+    fill="url(#hexGrad)"
+    opacity="0.15"
+  />
+  <polygon
+    points="30,4 52,17 52,43 30,56 8,43 8,17"
+    fill="none"
+    stroke="url(#hexGrad)"
+    stroke-width="1.5"
+    filter="url(#glow)"
+  />
+
+  <!-- Code symbol </> inside hexagon -->
+  <text
+    x="30" y="36"
+    text-anchor="middle"
+    font-family="'Fira Code', 'Courier New', monospace"
+    font-size="14"
+    font-weight="600"
+    fill="url(#hexGrad)"
+    filter="url(#glow)"
+  >&lt;/&gt;</text>
+
+  <!-- Name: Edgar -->
+  <text
+    x="66" y="32"
+    font-family="'Inter', 'Segoe UI', sans-serif"
+    font-size="22"
+    font-weight="800"
+    letter-spacing="-0.5"
+    fill="url(#textGrad)"
+  >Edgar</text>
+
+  <!-- Last name: Alcantara -->
+  <text
+    x="67" y="48"
+    font-family="'Inter', 'Segoe UI', sans-serif"
+    font-size="11"
+    font-weight="400"
+    letter-spacing="2.5"
+    fill="#8888aa"
+  >ALCANTARA</text>
+</svg>

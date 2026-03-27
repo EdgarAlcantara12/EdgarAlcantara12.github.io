@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edgar Emil Alcantara Pimentel | Portafolio</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <img src="logo.svg" alt="Edgar Alcantara" class="logo-img" />
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">Sobre mí</a></li>
+        <li><a href="#skills">Habilidades</a></li>
+        <li><a href="#projects">Proyectos</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-greeting reveal">Hola, soy</p>
+      <h1 class="hero-name reveal">Edgar Emil<br>Alcantara Pimentel</h1>
+      <div class="hero-title reveal">
+        <span class="typed-text" id="typedText"></span><span class="cursor">|</span>
+      </div>
+      <p class="hero-desc reveal">Construyo experiencias digitales modernas, rápidas y accesibles.<br />Apasionado por el código limpio y el diseño funcional.</p>
+      <div class="hero-cta reveal">
+        <a href="#projects" class="btn btn-primary">Ver proyectos</a>
+        <a href="#contact" class="btn btn-outline">Contáctame</a>
+      </div>
+      <div class="hero-scroll reveal"><span>Scroll</span><div class="scroll-line"></div></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about section" id="about">
+    <div class="container">
+      <h2 class="section-title reveal">Sobre <span class="accent">mí</span></h2>
+      <div class="about-grid">
+        <div class="about-img-wrap reveal">
+          <div class="about-img-frame">
+            <div class="about-avatar"><i class="fa-solid fa-user"></i></div>
+            <div class="about-badge"><i class="fa-solid fa-code"></i> Disponible</div>
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <h3>Desarrollador Web &amp; Entusiasta de la Tecnología</h3>
+          <p>Soy un desarrollador apasionado por crear soluciones elegantes a problemas complejos. Me especializo en el desarrollo web moderno, con enfoque en rendimiento, accesibilidad y experiencia de usuario.</p>
+          <p>Cuando no estoy programando, exploro nuevas tecnologías, contribuyo a proyectos de código abierto y busco siempre aprender algo nuevo cada día.</p>
+          <div class="about-stats">
+            <div class="stat"><span class="stat-num" data-target="10">0</span><span class="accent">+</span><span class="stat-label">Proyectos</span></div>
+            <div class="stat"><span class="stat-num" data-target="3">0</span><span class="accent">+</span><span class="stat-label">Años exp.</span></div>
+            <div class="stat"><span class="stat-num" data-target="5">0</span><span class="accent">+</span><span class="stat-label">Tecnologías</span></div>
+          </div>
+          <a href="#contact" class="btn btn-primary">Hablemos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="skills section" id="skills">
+    <div class="container">
+      <h2 class="section-title reveal">Mis <span class="accent">Habilidades</span></h2>
+      <p class="section-sub reveal">Tecnologías con las que trabajo día a día</p>
+      <div class="skills-grid">
+        <div class="skill-card reveal"><div class="skill-icon html"><i class="fa-brands fa-html5"></i></div><h4>HTML5</h4><div class="skill-bar"><div class="skill-fill" data-width="95"></div></div><span class="skill-pct">95%</span></div>
+        <div class="skill-card reveal"><div class="skill-icon css"><i class="fa-brands fa-css3-alt"></i></div><h4>CSS3</h4><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div><span class="skill-pct">90%</span></div>
+        <div class="skill-card reveal"><div class="skill-icon js"><i class="fa-brands fa-js"></i></div><h4>JavaScript</h4><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div><span class="skill-pct">85%</span></div>
+        <div class="skill-card reveal"><div class="skill-icon react"><i class="fa-brands fa-react"></i></div><h4>React</h4><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div><span class="skill-pct">80%</span></div>
+        <div class="skill-card reveal"><div class="skill-icon node"><i class="fa-brands fa-node-js"></i></div><h4>Node.js</h4><div class="skill-bar"><div class="skill-fill" data-width="75"></div></div><span class="skill-pct">75%</span></div>
+        <div class="skill-card reveal"><div class="skill-icon python"><i class="fa-brands fa-python"></i></div><h4>Python</h4><div class="skill-bar"><div class="skill-fill" data-width="78"></div></div><span class="skill-pct">78%</span></div>
+        <div class="skill-card reveal"><div class="skill-icon git"><i class="fa-brands fa-git-alt"></i></div><h4>Git</h4><div class="skill-bar"><div class="skill-fill" data-width="88"></div></div><span class="skill-pct">88%</span></div>
+        <div class="skill-card reveal"><div class="skill-icon db"><i class="fa-solid fa-database"></i></div><h4>SQL / NoSQL</h4><div class="skill-bar"><div class="skill-fill" data-width="72"></div></div><span class="skill-pct">72%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects section" id="projects">
+    <div class="container">
+      <h2 class="section-title reveal">Mis <span class="accent">Proyectos</span></h2>
+      <p class="section-sub reveal">Algunos trabajos que reflejan mi experiencia</p>
+      <div class="projects-grid">
+
+        <article class="project-card reveal">
+          <div class="project-img" style="--color:#00d4ff"><i class="fa-solid fa-cart-shopping"></i></div>
+          <div class="project-body">
+            <div class="project-tags"><span>React</span><span>Node.js</span><span>MongoDB</span></div>
+            <h3>E-Commerce Platform</h3>
+            <p>Plataforma de comercio electrónico completa con carrito, pagos y panel de administración.</p>
+            <div class="project-links">
+              <a href="#" class="btn-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+              <a href="#" class="btn-icon"><i class="fa-brands fa-github"></i> Código</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-img" style="--color:#a855f7"><i class="fa-solid fa-brain"></i></div>
+          <div class="project-body">
+            <div class="project-tags"><span>Python</span><span>FastAPI</span><span>AI</span></div>
+            <h3>AI Task Manager</h3>
+            <p>Gestor de tareas inteligente que usa IA para priorizar y sugerir flujos de trabajo óptimos.</p>
+            <div class="project-links">
+              <a href="#" class="btn-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+              <a href="#" class="btn-icon"><i class="fa-brands fa-github"></i> Código</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-img" style="--color:#f59e0b"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="project-body">
+            <div class="project-tags"><span>Vue.js</span><span>D3.js</span><span>REST API</span></div>
+            <h3>Dashboard Analytics</h3>
+            <p>Panel de analíticas en tiempo real con visualizaciones interactivas y reportes exportables.</p>
+            <div class="project-links">
+              <a href="#" class="btn-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+              <a href="#" class="btn-icon"><i class="fa-brands fa-github"></i> Código</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-img" style="--color:#10b981"><i class="fa-solid fa-comments"></i></div>
+          <div class="project-body">
+            <div class="project-tags"><span>React</span><span>Socket.io</span><span>Express</span></div>
+            <h3>Real-Time Chat App</h3>
+            <p>Aplicación de chat en tiempo real con salas, mensajes privados y notificaciones push.</p>
+            <div class="project-links">
+              <a href="#" class="btn-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+              <a href="#" class="btn-icon"><i class="fa-brands fa-github"></i> Código</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-img" style="--color:#ef4444"><i class="fa-solid fa-mobile-screen"></i></div>
+          <div class="project-body">
+            <div class="project-tags"><span>React Native</span><span>Firebase</span></div>
+            <h3>Fitness Tracker</h3>
+            <p>App móvil para seguimiento de rutinas, progreso físico y nutrición con estadísticas detalladas.</p>
+            <div class="project-links">
+              <a href="#" class="btn-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+              <a href="#" class="btn-icon"><i class="fa-brands fa-github"></i> Código</a>
+            </div>
+          </div>
+        </article>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact section" id="contact">
+    <div class="container">
+      <h2 class="section-title reveal">¿Hablamos? <span class="accent">Contáctame</span></h2>
+      <p class="section-sub reveal">Estoy disponible para proyectos freelance y oportunidades laborales</p>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <div class="contact-card"><i class="fa-solid fa-envelope"></i><div><span>Email</span><a href="mailto:edgaralcantara0881@gmail.com">edgaralcantara0881@gmail.com</a></div></div>
+          <div class="contact-card"><i class="fa-brands fa-github"></i><div><span>GitHub</span><a href="https://github.com/EdgarAlcantara12" target="_blank" rel="noopener">github.com/EdgarAlcantara12</a></div></div>
+          <div class="contact-card"><i class="fa-brands fa-linkedin"></i><div><span>LinkedIn</span><a href="https://www.linkedin.com/in/edgar-alcantara-b4911428a/" target="_blank" rel="noopener">linkedin.com/in/edgar-alcantara</a></div></div>
+          <div class="contact-card"><i class="fa-solid fa-location-dot"></i><div><span>Ubicación</span><p>República Dominicana</p></div></div>
+        </div>
+        <form class="contact-form reveal" id="contactForm" action="https://formspree.io/f/xpqowlog" method="POST" novalidate>
+          <div class="form-group"><label for="name">Nombre</label><input type="text" id="name" name="name" placeholder="Tu nombre" required /></div>
+          <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" placeholder="tu@email.com" required /></div>
+          <div class="form-group"><label for="subject">Asunto</label><input type="text" id="subject" name="subject" placeholder="Asunto del mensaje" /></div>
+          <div class="form-group"><label for="message">Mensaje</label><textarea id="message" name="message" rows="5" placeholder="Cuéntame sobre tu proyecto..." required></textarea></div>
+          <button type="submit" class="btn btn-primary btn-full"><i class="fa-solid fa-paper-plane"></i> Enviar mensaje</button>
+          <div class="form-status" id="formStatus"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <img src="logo.svg" alt="Edgar Alcantara" class="footer-logo-img" />
+      <p class="footer-copy">Diseñado y desarrollado con <span class="accent">❤</span> por Edgar Emil Alcantara Pimentel &mdash; 2025</p>
+      <div class="footer-socials">
+        <a href="https://github.com/EdgarAlcantara12" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/edgar-alcantara-b4911428a/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Volver arriba">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
