@@ -483,6 +483,47 @@ Presiona "Generar reporte" y la IA analizará todos tus datos de entrenamiento d
       return `Sesiones: ${sessions}. Tipos realizados: ${types.join(', ')}. Total calorías quemadas: ${totalKcal} kcal. Total tiempo activo: ${totalMin} minutos. Cambio de peso: ${delta} kg. Peso actual: ${ws[ws.length-1]||'N/D'} kg. Mejor sesión: ${best?.type||'N/D'} con ${best?.kcal||0} kcal.`;
     }
 
+    function fitCoachReply(text) {
+      const t = text.toLowerCase();
+      const sessions = workouts.length;
+      const totalKcal = workouts.reduce((a,w)=>a+w.kcal,0);
+      const totalMin  = workouts.reduce((a,w)=>a+w.duration,0);
+      const ws = workouts.filter(w=>w.weight).map(w=>w.weight);
+      const delta = ws.length>=2 ? (ws[ws.length-1]-ws[0]).toFixed(1) : null;
+      const types = [...new Set(workouts.map(w=>w.type))];
+      const best = [...workouts].sort((a,b)=>b.kcal-a.kcal)[0];
+
+      if (t.match(/peso|bajar|adelgaz|perder/)) {
+        return delta !== null
+          ? `Tu peso cambió ${delta > 0 ? '+' : ''}${delta} kg esta semana. ${delta <= 0 ? '¡Vas por buen camino! Mantén la consistencia y prioriza ejercicios de cardio e intervalos.' : 'No te desanimes, el progreso no siempre es lineal. Revisa tu hidratación y el descanso entre sesiones.'}`
+          : 'Registra tu peso en cada sesión para que pueda darte un seguimiento preciso. ¡La consistencia en los datos es clave para ver tu progreso!';
+      }
+      if (t.match(/caloría|quemar|caloria/)) {
+        return `Esta semana quemaste ${totalKcal.toLocaleString()} kcal en ${sessions} sesiones, un promedio de ${Math.round(totalKcal/sessions)} kcal por sesión. Tu mejor sesión fue ${best?.type} con ${best?.kcal} kcal. ¡Excelente trabajo!`;
+      }
+      if (t.match(/rutina|ejercicio|entrena|recomien/)) {
+        const missing = ['Cardio','Fuerza','HIIT','Yoga'].filter(t => !types.includes(t));
+        return missing.length
+          ? `Esta semana trabajaste ${types.join(', ')}. Te recomiendo agregar ${missing[0]} a tu próxima sesión para una rutina más equilibrada y mejores resultados a largo plazo.`
+          : '¡Excelente variedad esta semana! Has cubierto diferentes tipos de entrenamiento. Asegúrate de incluir al menos un día de descanso activo para que los músculos se recuperen.';
+      }
+      if (t.match(/tiempo|minuto|duración|duracion/)) {
+        return `Llevas ${totalMin} minutos de actividad física esta semana en ${sessions} sesiones. El promedio es ${Math.round(totalMin/sessions)} min por sesión. Para resultados óptimos, apunta a 150 minutos semanales de intensidad moderada.`;
+      }
+      if (t.match(/descanso|dormir|recovery|recuper/)) {
+        return 'El descanso es tan importante como el entrenamiento. Con ' + sessions + ' sesiones esta semana, asegúrate de dormir entre 7-9 horas y de incluir al menos un día de recuperación activa con estiramientos o yoga.';
+      }
+      if (t.match(/motivaci|ánimo|animo|cansad/)) {
+        return `¡No pares ahora! Llevas ${sessions} sesiones y ${totalKcal.toLocaleString()} kcal quemadas esta semana. Cada entrenamiento te acerca más a tu meta. Recuerda: la disciplina supera a la motivación.`;
+      }
+      const defaults = [
+        `Llevas ${sessions} sesiones esta semana con ${totalKcal.toLocaleString()} kcal quemadas. Tu constancia es admirable. ¿Quieres enfocarte en algún aspecto específico de tu entrenamiento?`,
+        `Basándome en tus datos, tu tipo más frecuente es ${types[0]}. Diversificar con ${['HIIT','Yoga','Natación'].find(t=>!types.includes(t))||'estiramientos'} puede potenciar tus resultados significativamente.`,
+        `Con ${totalMin} minutos activos esta semana, estás construyendo un hábito sólido. La clave es la consistencia a largo plazo más que la intensidad en períodos cortos.`,
+      ];
+      return defaults[Math.floor(Math.random() * defaults.length)];
+    }
+
     async function sendChat() {
       const input = document.getElementById('chat-input');
       const btn = document.getElementById('send-btn');
@@ -494,24 +535,9 @@ Presiona "Generar reporte" y la IA analizará todos tus datos de entrenamiento d
       msgs.scrollTop = msgs.scrollHeight;
       input.value = ''; btn.disabled = true;
 
-      try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-          method:'POST',
-          headers:{ 'Content-Type':'application/json' },
-          body: JSON.stringify({
-            model:'claude-sonnet-4-20250514', max_tokens:1000,
-            system:`Eres FitCoach, un entrenador personal IA amigable y motivador. Respondes en español, de forma concisa (máximo 3 oraciones), sin markdown ni asteriscos. Datos del usuario esta semana: ${buildSummary()}`,
-            messages:[{ role:'user', content:text }]
-          })
-        });
-        const data = await res.json();
-        const reply = data.content?.map(b=>b.text||'').join('') || 'No pude procesar la solicitud.';
-        document.getElementById('typing').remove();
-        msgs.innerHTML += `<div class="msg ai">${reply}</div>`;
-      } catch {
-        document.getElementById('typing').remove();
-        msgs.innerHTML += `<div class="msg ai">Error al conectar con la IA. Intenta de nuevo.</div>`;
-      }
+      await new Promise(r => setTimeout(r, 1200));
+      document.getElementById('typing').remove();
+      msgs.innerHTML += `<div class="msg ai">${fitCoachReply(text)}</div>`;
       msgs.scrollTop = msgs.scrollHeight;
       btn.disabled = false;
     }
@@ -525,24 +551,49 @@ Presiona "Generar reporte" y la IA analizará todos tus datos de entrenamiento d
       box.textContent = 'La IA está analizando tu semana, espera un momento...';
       box.className = 'report-content';
 
-      try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-          method:'POST',
-          headers:{ 'Content-Type':'application/json' },
-          body: JSON.stringify({
-            model:'claude-sonnet-4-20250514', max_tokens:1000,
-            messages:[{ role:'user', content:`Genera un reporte semanal de fitness en español. Datos: ${buildSummary()}. Incluye: 1) Resumen ejecutivo breve, 2) Logros de la semana, 3) Área de mejora, 4) Recomendaciones para la próxima semana. Usa texto plano sin markdown, sin asteriscos. Sé motivador y específico con los números.` }]
-          })
-        });
-        const data = await res.json();
-        const report = data.content?.map(b=>b.text||'').join('') || 'No se pudo generar el reporte.';
-        box.textContent = report;
-        box.className = 'report-content filled';
-        document.getElementById('export-txt-btn').style.display = 'inline-flex';
-        window._lastReport = report;
-      } catch {
-        box.textContent = 'Error al conectar con la IA.';
-      }
+      await new Promise(r => setTimeout(r, 1800));
+
+      const sessions = workouts.length;
+      const totalKcal = workouts.reduce((a,w)=>a+w.kcal,0);
+      const totalMin  = workouts.reduce((a,w)=>a+w.duration,0);
+      const types = [...new Set(workouts.map(w=>w.type))];
+      const ws = workouts.filter(w=>w.weight).map(w=>w.weight);
+      const delta = ws.length>=2 ? (ws[ws.length-1]-ws[0]).toFixed(1) : null;
+      const best = [...workouts].sort((a,b)=>b.kcal-a.kcal)[0];
+      const avgKcal = Math.round(totalKcal / sessions);
+      const avgMin  = Math.round(totalMin / sessions);
+      const missing = ['Cardio','Fuerza','HIIT','Yoga'].filter(t => !types.includes(t));
+
+      const report =
+`REPORTE SEMANAL DE FITNESS
+Generado por FitReport AI
+
+RESUMEN EJECUTIVO
+Esta semana completaste ${sessions} sesiones de entrenamiento con un total de ${totalKcal.toLocaleString()} calorías quemadas y ${totalMin} minutos de actividad física. ${delta !== null ? `Tu peso ${parseFloat(delta) <= 0 ? 'disminuyó' : 'aumentó'} ${Math.abs(delta)} kg durante este período.` : ''} El promedio por sesión fue de ${avgKcal} kcal y ${avgMin} minutos.
+
+LOGROS DE LA SEMANA
+- Completaste ${sessions} entrenamientos, demostrando gran constancia.
+- Quemaste un total de ${totalKcal.toLocaleString()} kcal, equivalente a aproximadamente ${Math.round(totalKcal/7700)} kg de grasa corporal trabajada.
+- Tu mejor sesión fue ${best?.type} con ${best?.kcal} kcal quemadas en ${best?.duration} minutos.
+- Trabajaste ${types.length} tipo${types.length > 1 ? 's' : ''} de ejercicio: ${types.join(', ')}.
+
+ÁREA DE MEJORA
+${missing.length ? `No incluiste ${missing.join(' ni ')} en tu rutina esta semana. Incorporar variedad muscular y de intensidad maximiza los resultados y previene lesiones por sobreuso.` : 'Tu variedad de ejercicios fue excelente. El área a mejorar es la intensidad progresiva: intenta aumentar un 5-10% la duración o calorías por sesión la próxima semana.'}
+El promedio de ${avgMin} minutos por sesión ${avgMin < 40 ? 'está por debajo del óptimo recomendado de 45-60 minutos. Intenta extender gradualmente tus sesiones.' : 'es muy bueno. Mantén esta duración y enfócate en aumentar la intensidad.'}
+
+RECOMENDACIONES PARA LA PRÓXIMA SEMANA
+1. Apunta a ${sessions >= 5 ? sessions : sessions + 1} sesiones manteniendo la consistencia que demostraste.
+2. ${missing.length ? `Agrega una sesión de ${missing[0]} para trabajar diferentes grupos musculares.` : 'Aumenta la intensidad en al menos una sesión con intervalos de alta intensidad.'}
+3. Asegúrate de incluir al menos un día de recuperación activa con estiramientos o caminata ligera.
+4. Hidratación: consume al menos 2.5 litros de agua en días de entrenamiento intenso.
+
+¡Excelente trabajo esta semana! La constancia es la clave del éxito a largo plazo.`;
+
+      box.textContent = report;
+      box.className = 'report-content filled';
+      document.getElementById('export-txt-btn').style.display = 'inline-flex';
+      window._lastReport = report;
+
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Generar reporte';
     }
