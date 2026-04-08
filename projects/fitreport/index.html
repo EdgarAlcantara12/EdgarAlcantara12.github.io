@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitReport AI | Edgar Alcantara</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg-900: #0a0a0f;
+      --bg-800: #0f0f1a;
+      --bg-700: #141428;
+      --bg-card: #12121f;
+      --bg-card-hover: #1a1a30;
+      --accent: #00d4ff;
+      --accent-2: #a855f7;
+      --accent-glow: rgba(0, 212, 255, 0.25);
+      --accent-2-glow: rgba(168, 85, 247, 0.2);
+      --text-primary: #f0f0ff;
+      --text-secondary: #8888aa;
+      --text-muted: #555577;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-hover: rgba(0, 212, 255, 0.3);
+      --radius: 12px;
+      --radius-lg: 20px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-accent: 0 0 40px var(--accent-glow);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-900); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* TOPBAR */
+    .topbar { position: fixed; top: 0; width: 100%; z-index: 100; padding: 14px 0; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .back-link { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: var(--text-secondary); transition: color var(--transition); font-weight: 500; }
+    .back-link:hover { color: var(--accent); }
+    .project-badge { font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--accent); background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); padding: 4px 12px; border-radius: 40px; }
+
+    /* HERO APP */
+    .app-hero { min-height: 100vh; display: flex; flex-direction: column; padding-top: 65px; position: relative; overflow: hidden; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.1; animation: blobFloat 8s ease-in-out infinite; pointer-events: none; }
+    .blob-1 { width: 500px; height: 500px; background: var(--accent); top: -150px; right: -100px; }
+    .blob-2 { width: 400px; height: 400px; background: var(--accent-2); bottom: -100px; left: -100px; animation-delay: -4s; }
+    @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(0.95)} }
+    .grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px); background-size: 60px 60px; pointer-events: none; }
+
+    /* CONTAINER */
+    .app-wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 60px; position: relative; z-index: 1; flex: 1; }
+
+    /* APP HEADER */
+    .app-header { margin-bottom: 32px; }
+    .app-title-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+    .app-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #000; flex-shrink: 0; }
+    .app-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg,#fff 0%,var(--accent) 60%,var(--accent-2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .app-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-left: 64px; }
+
+    /* TABS */
+    .tabs { display: flex; gap: 4px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px; width: fit-content; margin-bottom: 28px; }
+    .tab { padding: 8px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; border: none; cursor: pointer; background: transparent; color: var(--text-muted); font-family: 'Inter', sans-serif; transition: var(--transition); display: flex; align-items: center; gap: 7px; }
+    .tab i { font-size: 0.8rem; }
+    .tab.active { background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(168,85,247,0.1)); color: var(--text-primary); border: 1px solid rgba(0,212,255,0.2); }
+
+    /* METRICS */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; transition: var(--transition); position: relative; overflow: hidden; }
+    .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transform: scaleX(0); transition: transform var(--transition); }
+    .metric-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .metric-card:hover::before { transform: scaleX(1); }
+    .metric-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Fira Code', monospace; margin-bottom: 6px; }
+    .metric-value { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; }
+    .metric-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .metric-sub.pos { color: #10b981; }
+    .metric-sub.neg { color: #ef4444; }
+
+    /* GRID LAYOUT */
+    .main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+    .col-main { display: flex; flex-direction: column; gap: 20px; }
+    .col-side { display: flex; flex-direction: column; gap: 16px; }
+
+    /* CARDS */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; transition: border-color var(--transition); }
+    .card:hover { border-color: rgba(255,255,255,0.1); }
+    .card-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Fira Code', monospace; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .card-label i { color: var(--accent); }
+
+    /* CHARTS */
+    .chart-wrap { position: relative; width: 100%; height: 200px; }
+
+    /* WORKOUT LIST */
+    .workout-list { display: flex; flex-direction: column; }
+    .workout-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .workout-item:last-child { border-bottom: none; }
+    .w-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px currentColor; }
+    .w-info { flex: 1; }
+    .w-name { font-size: 0.875rem; font-weight: 600; }
+    .w-meta { font-size: 0.75rem; color: var(--text-muted); font-family: 'Fira Code', monospace; }
+    .w-kcal { font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; }
+
+    /* CHAT */
+    .chat-wrap { display: flex; flex-direction: column; height: 360px; }
+    .chat-msgs { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; padding-bottom: 8px; }
+    .chat-msgs::-webkit-scrollbar { width: 4px; }
+    .chat-msgs::-webkit-scrollbar-track { background: transparent; }
+    .chat-msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .msg { max-width: 88%; padding: 10px 14px; font-size: 0.85rem; line-height: 1.55; }
+    .msg.ai { background: var(--bg-700); border: 1px solid var(--border); border-radius: 4px 14px 14px 14px; color: var(--text-primary); align-self: flex-start; }
+    .msg.user { background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(168,85,247,0.1)); border: 1px solid rgba(0,212,255,0.2); border-radius: 14px 4px 14px 14px; color: var(--text-primary); align-self: flex-end; }
+    .msg.typing { color: var(--text-muted); font-style: italic; font-size: 0.8rem; }
+    .quick-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .qq { font-size: 0.72rem; padding: 4px 10px; border-radius: 40px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; font-family: 'Fira Code', monospace; transition: var(--transition); }
+    .qq:hover { border-color: var(--border-hover); color: var(--accent); }
+    .chat-input-row { display: flex; gap: 8px; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+    .chat-input-row input { flex: 1; background: var(--bg-800); border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; color: var(--text-primary); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: var(--transition); }
+    .chat-input-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,255,0.08); }
+    .chat-input-row input::placeholder { color: var(--text-muted); }
+    .send-btn { padding: 9px 16px; border-radius: 8px; border: none; background: linear-gradient(135deg, var(--accent), #0099cc); color: #000; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif; }
+    .send-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
+    .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    /* SECTIONS */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* LOG FORM */
+    .log-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+    .form-group select, .form-group input, .form-group textarea {
+      background: var(--bg-800); border: 1px solid var(--border); border-radius: 8px;
+      padding: 11px 14px; color: var(--text-primary); font-family: 'Inter', sans-serif;
+      font-size: 0.9rem; outline: none; transition: var(--transition); width: 100%;
+    }
+    .form-group select:focus, .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,255,0.08); }
+    .form-group select option { background: var(--bg-800); }
+    .form-group input::placeholder { color: var(--text-muted); }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--accent), #0099cc); color: #000; transition: var(--transition); font-family: 'Inter', sans-serif; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+    .btn-primary:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); transition: var(--transition); font-family: 'Inter', sans-serif; width: 100%; justify-content: center; }
+    .btn-ghost:hover { border-color: var(--border-hover); color: var(--accent); background: var(--bg-card-hover); }
+    .log-status { font-size: 0.8rem; text-align: center; min-height: 20px; margin-top: 8px; }
+    .log-status.ok { color: #10b981; }
+    .log-status.err { color: #ef4444; }
+
+    /* REPORT */
+    .report-content { background: var(--bg-800); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; font-size: 0.875rem; color: var(--text-secondary); line-height: 1.85; white-space: pre-wrap; min-height: 120px; }
+    .report-content.filled { color: var(--text-primary); }
+    .report-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+    /* SUMMARY STATS */
+    .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-row span:first-child { color: var(--text-muted); font-family: 'Fira Code', monospace; font-size: 0.78rem; }
+    .stat-row span:last-child { font-weight: 600; }
+
+    /* FOOTER */
+    .app-footer { text-align: center; padding: 24px; border-top: 1px solid var(--border); margin-top: 20px; }
+    .app-footer p { font-size: 0.8rem; color: var(--text-muted); }
+    .app-footer a { color: var(--accent); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .log-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .tabs { width: 100%; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <a href="../index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Volver al portafolio
+      </a>
+      <span class="project-badge">proyecto / fitreport-ai</span>
+    </div>
+  </nav>
+
+  <div class="app-hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="app-wrap">
+
+      <!-- HEADER -->
+      <div class="app-header">
+        <div class="app-title-row">
+          <div class="app-icon"><i class="fa-solid fa-dumbbell"></i></div>
+          <h1 class="app-title">FitReport AI</h1>
+        </div>
+        <p class="app-subtitle">Tu entrenador personal impulsado por inteligencia artificial &mdash; seguimiento, análisis y reportes</p>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+        <button class="tab" onclick="switchTab('log', this)"><i class="fa-solid fa-plus"></i> Registrar</button>
+        <button class="tab" onclick="switchTab('report', this)"><i class="fa-solid fa-file-lines"></i> Reportes</button>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section active">
+        <div class="metrics" id="metrics-row"></div>
+        <div class="main-grid">
+          <div class="col-main">
+            <div class="card">
+              <div class="card-label"><i class="fa-solid fa-weight-scale"></i> Peso esta semana (kg)</div>
+              <div class="chart-wrap"><canvas id="weightChart" role="img" aria-label="Gráfica de peso semanal">Progreso de peso de lunes a domingo.</canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-label"><i class="fa-solid fa-fire"></i> Calorías quemadas por día</div>
+              <div class="chart-wrap"><canvas id="calChart" role="img" aria-label="Calorías quemadas por día">Calorías quemadas cada día de la semana.</canvas></div>
+            </div>
+          </div>
+          <div class="col-side">
+            <div class="card">
+              <div class="card-label"><i class="fa-solid fa-list-check"></i> Entrenamientos recientes</div>
+              <div class="workout-list" id="workout-list"></div>
+            </div>
+            <div class="card">
+              <div class="card-label"><i class="fa-solid fa-robot"></i> Entrenador IA</div>
+              <div class="quick-btns">
+                <button class="qq" onclick="askQuick('¿Cómo estuvo mi semana?')">mi semana</button>
+                <button class="qq" onclick="askQuick('¿En qué mejoré más?')">mi progreso</button>
+                <button class="qq" onclick="askQuick('Dame una rutina para mañana')">rutina</button>
+                <button class="qq" onclick="askQuick('¿Cuántas calorías quemé esta semana?')">calorías</button>
+              </div>
+              <div class="chat-wrap">
+                <div class="chat-msgs" id="chat-msgs">
+                  <div class="msg ai">¡Hola! Soy tu entrenador IA. Tengo acceso a tus datos de entrenamiento y puedo analizar tu progreso, darte recomendaciones personalizadas o responder tus dudas. ¿En qué te ayudo?</div>
+                </div>
+                <div class="chat-input-row">
+                  <input type="text" id="chat-input" placeholder="Pregúntame algo sobre tu entrenamiento..." onkeydown="if(event.key==='Enter') sendChat()" />
+                  <button class="send-btn" onclick="sendChat()" id="send-btn">↑</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG -->
+      <div id="sec-log" class="section">
+        <div class="log-grid">
+          <div class="card">
+            <div class="card-label"><i class="fa-solid fa-pencil"></i> Registrar entrenamiento</div>
+            <div class="form-group">
+              <label>Tipo de ejercicio</label>
+              <select id="log-type">
+                <option>Cardio</option><option>Fuerza</option><option>HIIT</option>
+                <option>Yoga</option><option>Ciclismo</option><option>Natación</option><option>Caminata</option>
+              </select>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label>Duración (min)</label>
+                <input type="number" id="log-duration" placeholder="45" min="1" />
+              </div>
+              <div class="form-group">
+                <label>Calorías</label>
+                <input type="number" id="log-kcal" placeholder="320" min="1" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Peso hoy (kg)</label>
+              <input type="number" id="log-weight" placeholder="75.5" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label>Notas (opcional)</label>
+              <input type="text" id="log-notes" placeholder="Cómo te sentiste, PR, etc." />
+            </div>
+            <button class="btn-primary" onclick="logWorkout()" style="width:100%; justify-content:center;">
+              <i class="fa-solid fa-plus"></i> Guardar entrenamiento
+            </button>
+            <div class="log-status" id="log-status"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-label"><i class="fa-solid fa-calendar-day"></i> Registros de hoy</div>
+            <div class="workout-list" id="today-list">
+              <p style="font-size:0.85rem; color:var(--text-muted); padding: 8px 0;">No hay registros para hoy aún.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORT -->
+      <div id="sec-report" class="section">
+        <div class="main-grid">
+          <div class="col-main">
+            <div class="card">
+              <div class="card-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Reporte semanal generado por IA</div>
+              <div id="report-content" class="report-content">
+Presiona "Generar reporte" y la IA analizará todos tus datos de entrenamiento de la semana para crear un reporte personalizado con tu progreso, logros y recomendaciones específicas para ti.
+              </div>
+              <div class="report-actions">
+                <button class="btn-primary" onclick="generateReport()" id="gen-btn">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Generar reporte
+                </button>
+                <button class="btn-ghost" onclick="exportTXT()" id="export-txt-btn" style="display:none; width:auto;">
+                  <i class="fa-solid fa-download"></i> Descargar .txt
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-side">
+            <div class="card">
+              <div class="card-label"><i class="fa-solid fa-table"></i> Exportar datos</div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <button class="btn-ghost" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i> Exportar CSV (Excel)</button>
+                <button class="btn-ghost" onclick="exportJSON()"><i class="fa-solid fa-code"></i> Exportar JSON</button>
+              </div>
+              <p style="font-size:0.75rem; color:var(--text-muted); margin-top:12px; line-height:1.6;">El CSV se abre directamente en Excel o Google Sheets con todas tus métricas.</p>
+            </div>
+            <div class="card">
+              <div class="card-label"><i class="fa-solid fa-chart-pie"></i> Resumen del periodo</div>
+              <div id="summary-stats"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="app-footer">
+      <p>FitReport AI &mdash; Proyecto de <a href="../index.html">Edgar Alcantara</a> &mdash; Impulsado por Claude (Anthropic)</p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script>
+    const DAYS = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+    const DOT = { Cardio:'#00d4ff', Fuerza:'#a855f7', HIIT:'#ef4444', Yoga:'#10b981', Ciclismo:'#f59e0b', Natación:'#ec4899', Caminata:'#8b5cf6' };
+
+    function today() { return new Date().toISOString().split('T')[0]; }
+    function offset(d) { const dt = new Date(); dt.setDate(dt.getDate()+d); return dt.toISOString().split('T')[0]; }
+
+    let workouts = JSON.parse(localStorage.getItem('fr2_workouts') || 'null') || [
+      { type:'Cardio',    duration:35, kcal:320, weight:78.5, date:offset(-6), notes:'' },
+      { type:'Fuerza',    duration:50, kcal:280, weight:78.2, date:offset(-5), notes:'' },
+      { type:'HIIT',      duration:25, kcal:380, weight:78.0, date:offset(-4), notes:'' },
+      { type:'Ciclismo',  duration:45, kcal:420, weight:77.8, date:offset(-2), notes:'' },
+      { type:'Yoga',      duration:40, kcal:150, weight:77.6, date:offset(-1), notes:'' },
+      { type:'Fuerza',    duration:55, kcal:310, weight:77.5, date:today(),    notes:'' },
+    ];
+
+    function save() { localStorage.setItem('fr2_workouts', JSON.stringify(workouts)); }
+
+    function switchTab(id, el) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('sec-'+id).classList.add('active');
+      el.classList.add('active');
+      if (id === 'report') renderSummary();
+    }
+
+    function getWeekData() {
+      const weights = [], cals = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = offset(-i);
+        const ws = workouts.filter(w => w.date === d);
+        weights.push(ws.length ? ws[ws.length-1].weight : null);
+        cals.push(ws.reduce((a,w) => a + w.kcal, 0));
+      }
+      return { weights, cals };
+    }
+
+    let wChart, cChart;
+    function initCharts() {
+      const { weights, cals } = getWeekData();
+      if (wChart) wChart.destroy();
+      if (cChart) cChart.destroy();
+
+      wChart = new Chart(document.getElementById('weightChart'), {
+        type: 'line',
+        data: {
+          labels: DAYS,
+          datasets: [{ label:'Peso (kg)', data: weights, borderColor:'#00d4ff', backgroundColor:'rgba(0,212,255,0.06)', borderWidth:2, pointRadius:5, pointBackgroundColor:'#00d4ff', pointBorderColor:'#0a0a0f', pointBorderWidth:2, fill:true, spanGaps:true, tension:0.3 }]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{ display:false } },
+          scales:{
+            y:{ ticks:{ callback:v=>v+' kg', color:'#555577', font:{size:11,family:'Fira Code'} }, grid:{ color:'rgba(255,255,255,0.04)' }, border:{display:false} },
+            x:{ ticks:{ color:'#555577', font:{size:11,family:'Fira Code'} }, grid:{ display:false }, border:{display:false} }
+          }
+        }
+      });
+
+      cChart = new Chart(document.getElementById('calChart'), {
+        type: 'bar',
+        data: {
+          labels: DAYS,
+          datasets: [{ label:'Calorías', data:cals, backgroundColor: cals.map(v => v > 300 ? 'rgba(0,212,255,0.7)' : 'rgba(0,212,255,0.2)'), borderRadius:6, borderSkipped:false }]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{ display:false } },
+          scales:{
+            y:{ ticks:{ callback:v=>v+' kcal', color:'#555577', font:{size:11,family:'Fira Code'} }, grid:{ color:'rgba(255,255,255,0.04)' }, border:{display:false} },
+            x:{ ticks:{ color:'#555577', font:{size:11,family:'Fira Code'}, autoSkip:false }, grid:{ display:false }, border:{display:false} }
+          }
+        }
+      });
+    }
+
+    function renderMetrics() {
+      const lastW = [...workouts].reverse().find(w => w.weight);
+      const firstW = workouts[0];
+      const delta = lastW && firstW ? (lastW.weight - firstW.weight).toFixed(1) : 0;
+      const totalKcal = workouts.reduce((a,w) => a+w.kcal, 0);
+      const totalMin  = workouts.reduce((a,w) => a+w.duration, 0);
+      document.getElementById('metrics-row').innerHTML = `
+        <div class="metric-card"><div class="metric-label">Peso actual</div><div class="metric-value" style="color:var(--accent)">${lastW ? lastW.weight : '--'}<span style="font-size:1rem;font-weight:400"> kg</span></div><div class="metric-sub ${delta<=0?'pos':'neg'}">${delta>0?'+':''}${delta} kg total</div></div>
+        <div class="metric-card"><div class="metric-label">Sesiones</div><div class="metric-value">${workouts.length}</div><div class="metric-sub">esta semana</div></div>
+        <div class="metric-card"><div class="metric-label">Calorías</div><div class="metric-value" style="color:var(--accent-2)">${totalKcal.toLocaleString()}</div><div class="metric-sub">kcal quemadas</div></div>
+        <div class="metric-card"><div class="metric-label">Tiempo activo</div><div class="metric-value">${totalMin}</div><div class="metric-sub">minutos totales</div></div>
+      `;
+    }
+
+    function renderWorkouts() {
+      const recent = [...workouts].reverse().slice(0, 6);
+      document.getElementById('workout-list').innerHTML = recent.map(w => `
+        <div class="workout-item">
+          <div class="w-dot" style="color:${DOT[w.type]||'#888'};background:${DOT[w.type]||'#888'}"></div>
+          <div class="w-info">
+            <div class="w-name">${w.type}</div>
+            <div class="w-meta">${w.duration}min · ${w.date}</div>
+          </div>
+          <div class="w-kcal">${w.kcal} kcal</div>
+        </div>
+      `).join('');
+    }
+
+    function renderTodayList() {
+      const td = workouts.filter(w => w.date === today());
+      const el = document.getElementById('today-list');
+      if (!td.length) { el.innerHTML = '<p style="font-size:0.85rem; color:var(--text-muted); padding:8px 0;">No hay registros para hoy aún.</p>'; return; }
+      el.innerHTML = td.map(w => `
+        <div class="workout-item">
+          <div class="w-dot" style="color:${DOT[w.type]||'#888'};background:${DOT[w.type]||'#888'}"></div>
+          <div class="w-info"><div class="w-name">${w.type}</div><div class="w-meta">${w.duration} min · ${w.kcal} kcal · ${w.weight} kg</div></div>
+        </div>
+      `).join('');
+    }
+
+    function logWorkout() {
+      const type = document.getElementById('log-type').value;
+      const duration = parseInt(document.getElementById('log-duration').value);
+      const kcal = parseInt(document.getElementById('log-kcal').value);
+      const weight = parseFloat(document.getElementById('log-weight').value);
+      const notes = document.getElementById('log-notes').value;
+      const st = document.getElementById('log-status');
+      if (!duration || !kcal || !weight) { st.textContent='Completa duración, calorías y peso.'; st.className='log-status err'; return; }
+      workouts.push({ type, duration, kcal, weight, date:today(), notes });
+      save();
+      st.textContent='✓ Entrenamiento guardado'; st.className='log-status ok';
+      ['log-duration','log-kcal','log-weight','log-notes'].forEach(id => document.getElementById(id).value='');
+      renderTodayList(); renderMetrics(); initCharts();
+      setTimeout(() => { st.textContent=''; st.className='log-status'; }, 3000);
+    }
+
+    function buildSummary() {
+      const sessions = workouts.length;
+      const totalKcal = workouts.reduce((a,w) => a+w.kcal, 0);
+      const totalMin  = workouts.reduce((a,w) => a+w.duration, 0);
+      const types = [...new Set(workouts.map(w => w.type))];
+      const ws = workouts.filter(w=>w.weight).map(w=>w.weight);
+      const delta = ws.length>=2 ? (ws[ws.length-1]-ws[0]).toFixed(1) : 'N/D';
+      const best = [...workouts].sort((a,b)=>b.kcal-a.kcal)[0];
+      return `Sesiones: ${sessions}. Tipos realizados: ${types.join(', ')}. Total calorías quemadas: ${totalKcal} kcal. Total tiempo activo: ${totalMin} minutos. Cambio de peso: ${delta} kg. Peso actual: ${ws[ws.length-1]||'N/D'} kg. Mejor sesión: ${best?.type||'N/D'} con ${best?.kcal||0} kcal.`;
+    }
+
+    async function sendChat() {
+      const input = document.getElementById('chat-input');
+      const btn = document.getElementById('send-btn');
+      const msgs = document.getElementById('chat-msgs');
+      const text = input.value.trim();
+      if (!text) return;
+      msgs.innerHTML += `<div class="msg user">${text}</div>`;
+      msgs.innerHTML += `<div class="msg ai typing" id="typing">Analizando tus datos...</div>`;
+      msgs.scrollTop = msgs.scrollHeight;
+      input.value = ''; btn.disabled = true;
+
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({
+            model:'claude-sonnet-4-20250514', max_tokens:1000,
+            system:`Eres FitCoach, un entrenador personal IA amigable y motivador. Respondes en español, de forma concisa (máximo 3 oraciones), sin markdown ni asteriscos. Datos del usuario esta semana: ${buildSummary()}`,
+            messages:[{ role:'user', content:text }]
+          })
+        });
+        const data = await res.json();
+        const reply = data.content?.map(b=>b.text||'').join('') || 'No pude procesar la solicitud.';
+        document.getElementById('typing').remove();
+        msgs.innerHTML += `<div class="msg ai">${reply}</div>`;
+      } catch {
+        document.getElementById('typing').remove();
+        msgs.innerHTML += `<div class="msg ai">Error al conectar con la IA. Intenta de nuevo.</div>`;
+      }
+      msgs.scrollTop = msgs.scrollHeight;
+      btn.disabled = false;
+    }
+
+    function askQuick(q) { document.getElementById('chat-input').value = q; sendChat(); }
+
+    async function generateReport() {
+      const btn = document.getElementById('gen-btn');
+      const box = document.getElementById('report-content');
+      btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando...';
+      box.textContent = 'La IA está analizando tu semana, espera un momento...';
+      box.className = 'report-content';
+
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({
+            model:'claude-sonnet-4-20250514', max_tokens:1000,
+            messages:[{ role:'user', content:`Genera un reporte semanal de fitness en español. Datos: ${buildSummary()}. Incluye: 1) Resumen ejecutivo breve, 2) Logros de la semana, 3) Área de mejora, 4) Recomendaciones para la próxima semana. Usa texto plano sin markdown, sin asteriscos. Sé motivador y específico con los números.` }]
+          })
+        });
+        const data = await res.json();
+        const report = data.content?.map(b=>b.text||'').join('') || 'No se pudo generar el reporte.';
+        box.textContent = report;
+        box.className = 'report-content filled';
+        document.getElementById('export-txt-btn').style.display = 'inline-flex';
+        window._lastReport = report;
+      } catch {
+        box.textContent = 'Error al conectar con la IA.';
+      }
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Generar reporte';
+    }
+
+    function renderSummary() {
+      const totalKcal = workouts.reduce((a,w)=>a+w.kcal,0);
+      const totalMin  = workouts.reduce((a,w)=>a+w.duration,0);
+      const ws = workouts.filter(w=>w.weight).map(w=>w.weight);
+      const delta = ws.length>=2 ? (ws[ws.length-1]-ws[0]).toFixed(1) : '--';
+      const types = [...new Set(workouts.map(w=>w.type))];
+      document.getElementById('summary-stats').innerHTML = [
+        ['sesiones', workouts.length],
+        ['calorías', totalKcal.toLocaleString()+' kcal'],
+        ['tiempo activo', totalMin+' min'],
+        ['cambio de peso', (delta>0?'+':'')+delta+' kg'],
+        ['tipos de ejercicio', types.length],
+      ].map(([l,v]) => `<div class="stat-row"><span>${l}</span><span>${v}</span></div>`).join('');
+    }
+
+    function exportCSV() {
+      const header = 'Fecha,Tipo,Duración (min),Calorías,Peso (kg),Notas\n';
+      const rows = workouts.map(w=>`${w.date},${w.type},${w.duration},${w.kcal},${w.weight},"${w.notes}"`).join('\n');
+      download(header+rows, 'fitreport_datos.csv', 'text/csv');
+    }
+    function exportJSON() { download(JSON.stringify(workouts,null,2), 'fitreport_datos.json', 'application/json'); }
+    function exportTXT() { if (window._lastReport) download(window._lastReport, 'reporte_semanal.txt', 'text/plain'); }
+    function download(data, name, type) {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([data],{type}));
+      a.download = name; a.click();
+    }
+
+    // INIT
+    renderMetrics();
+    renderWorkouts();
+    renderTodayList();
+    initCharts();
+  </script>
+</body>
+</html>
