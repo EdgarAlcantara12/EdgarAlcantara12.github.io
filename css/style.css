@@ -136,12 +136,21 @@ ul { list-style: none; }
 
 /* ── CONTACT ── */
 .contact { background: var(--bg-900); }
-.diagnostico-banner { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: linear-gradient(135deg, rgba(0,212,255,0.07), rgba(168,85,247,0.07)); border: 1px solid rgba(0,212,255,0.2); border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 40px; text-decoration: none; transition: var(--transition); }
-.diagnostico-banner:hover { border-color: rgba(0,212,255,0.5); background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(168,85,247,0.12)); transform: translateY(-2px); }
-.diagnostico-banner-text { display: flex; flex-direction: column; gap: 4px; }
-.diagnostico-banner-text strong { color: #fff; font-size: 1rem; }
-.diagnostico-banner-text span { color: var(--text-muted); font-size: 0.875rem; }
-.diagnostico-banner-cta { white-space: nowrap; background: var(--accent); color: #000; font-weight: 700; font-size: 0.85rem; padding: 10px 20px; border-radius: 100px; flex-shrink: 0; }
+.diagnostico-banner { position: relative; display: flex; align-items: flex-start; gap: 24px; background: var(--bg-card); border: 1px solid rgba(0,212,255,0.25); border-radius: var(--radius-lg); padding: 36px 32px; margin-bottom: 40px; text-decoration: none; transition: var(--transition); overflow: hidden; cursor: pointer; }
+.diagnostico-banner:hover { border-color: rgba(0,212,255,0.6); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(0,212,255,0.1); }
+.diagnostico-banner:hover .diagnostico-banner-btn { background: var(--accent); color: #000; gap: 10px; }
+.diagnostico-banner-glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%); pointer-events: none; }
+.diagnostico-banner-icon { font-size: 2.5rem; flex-shrink: 0; margin-top: 2px; }
+.diagnostico-banner-body { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.diagnostico-banner-eyebrow { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
+.diagnostico-banner-title { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+.diagnostico-banner-desc { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; max-width: 420px; }
+.diagnostico-banner-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.35); color: var(--accent); font-size: 0.875rem; font-weight: 700; padding: 10px 20px; border-radius: 100px; width: fit-content; transition: var(--transition); }
+.diagnostico-banner-steps { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; padding-left: 24px; border-left: 1px solid var(--border); }
+.diag-step { display: flex; align-items: center; gap: 8px; }
+.diag-step span { font-size: 0.7rem; font-weight: 700; color: var(--accent); opacity: 0.7; width: 18px; }
+.diag-step p { font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; }
+@media (max-width: 768px) { .diagnostico-banner { flex-direction: column; } .diagnostico-banner-steps { flex-direction: row; flex-wrap: wrap; border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 16px; width: 100%; } }
 .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start; }
 .contact-info { display: flex; flex-direction: column; gap: 16px; }
 .contact-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 16px; transition: var(--transition); }
