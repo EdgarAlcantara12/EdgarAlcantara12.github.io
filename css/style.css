@@ -136,6 +136,12 @@ ul { list-style: none; }
 
 /* ── CONTACT ── */
 .contact { background: var(--bg-900); }
+.diagnostico-banner { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: linear-gradient(135deg, rgba(0,212,255,0.07), rgba(168,85,247,0.07)); border: 1px solid rgba(0,212,255,0.2); border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 40px; text-decoration: none; transition: var(--transition); }
+.diagnostico-banner:hover { border-color: rgba(0,212,255,0.5); background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(168,85,247,0.12)); transform: translateY(-2px); }
+.diagnostico-banner-text { display: flex; flex-direction: column; gap: 4px; }
+.diagnostico-banner-text strong { color: #fff; font-size: 1rem; }
+.diagnostico-banner-text span { color: var(--text-muted); font-size: 0.875rem; }
+.diagnostico-banner-cta { white-space: nowrap; background: var(--accent); color: #000; font-weight: 700; font-size: 0.85rem; padding: 10px 20px; border-radius: 100px; flex-shrink: 0; }
 .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start; }
 .contact-info { display: flex; flex-direction: column; gap: 16px; }
 .contact-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 16px; transition: var(--transition); }
