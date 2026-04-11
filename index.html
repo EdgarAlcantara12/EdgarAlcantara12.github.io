@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
@@ -33,8 +35,8 @@
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-bg">
-      <div class="blob blob-1"></div>
-      <div class="blob blob-2"></div>
+      <div class="blob blob-1" id="blob1"></div>
+      <div class="blob blob-2" id="blob2"></div>
       <div class="grid-overlay"></div>
     </div>
     <div class="hero-content">
@@ -57,13 +59,13 @@
     <div class="container">
       <h2 class="section-title reveal">Sobre <span class="accent">mí</span></h2>
       <div class="about-grid">
-        <div class="about-img-wrap reveal">
+        <div class="about-img-wrap reveal-left">
           <div class="about-img-frame">
             <div class="about-avatar"><i class="fa-solid fa-user"></i></div>
             <div class="about-badge"><i class="fa-solid fa-code"></i> Disponible</div>
           </div>
         </div>
-        <div class="about-text reveal">
+        <div class="about-text reveal-right">
           <h3>Desarrollador Web &amp; Entusiasta de la Tecnología</h3>
           <p>Soy un desarrollador apasionado por crear soluciones elegantes a problemas complejos. Me especializo en el desarrollo web moderno, con enfoque en rendimiento, accesibilidad y experiencia de usuario.</p>
           <p>Cuando no estoy programando, exploro nuevas tecnologías, contribuyo a proyectos de código abierto y busco siempre aprender algo nuevo cada día.</p>
@@ -104,7 +106,7 @@
       <div class="projects-grid">
 
         <article class="project-card reveal">
-          <div class="project-img" style="--color:#00d4ff"><i class="fa-solid fa-cart-shopping"></i></div>
+          <div class="project-img" style="--color:#60a5fa"><i class="fa-solid fa-cart-shopping"></i></div>
           <div class="project-body">
             <div class="project-tags"><span>React</span><span>Node.js</span><span>MongoDB</span></div>
             <h3>E-Commerce Platform</h3>
@@ -117,7 +119,7 @@
         </article>
 
         <article class="project-card reveal">
-          <div class="project-img" style="--color:#a855f7"><i class="fa-solid fa-brain"></i></div>
+          <div class="project-img" style="--color:#a78bfa"><i class="fa-solid fa-brain"></i></div>
           <div class="project-body">
             <div class="project-tags"><span>Python</span><span>FastAPI</span><span>AI</span></div>
             <h3>AI Task Manager</h3>
@@ -130,7 +132,7 @@
         </article>
 
         <article class="project-card reveal">
-          <div class="project-img" style="--color:#f59e0b"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="project-img" style="--color:#fbbf24"><i class="fa-solid fa-chart-line"></i></div>
           <div class="project-body">
             <div class="project-tags"><span>Vue.js</span><span>D3.js</span><span>REST API</span></div>
             <h3>Dashboard Analytics</h3>
@@ -143,7 +145,7 @@
         </article>
 
         <article class="project-card reveal">
-          <div class="project-img" style="--color:#10b981"><i class="fa-solid fa-comments"></i></div>
+          <div class="project-img" style="--color:#34d399"><i class="fa-solid fa-comments"></i></div>
           <div class="project-body">
             <div class="project-tags"><span>React</span><span>Socket.io</span><span>Express</span></div>
             <h3>Real-Time Chat App</h3>
@@ -156,7 +158,7 @@
         </article>
 
         <article class="project-card reveal">
-          <div class="project-img" style="--color:#ef4444"><i class="fa-solid fa-mobile-screen"></i></div>
+          <div class="project-img" style="--color:#f87171"><i class="fa-solid fa-mobile-screen"></i></div>
           <div class="project-body">
             <div class="project-tags"><span>React Native</span><span>Firebase</span></div>
             <h3>Fitness Tracker</h3>
@@ -169,7 +171,7 @@
         </article>
 
         <article class="project-card reveal">
-          <div class="project-img" style="--color:#00d4ff">
+          <div class="project-img" style="--color:#818cf8">
             <i class="fa-solid fa-dumbbell"></i>
           </div>
           <div class="project-body">
@@ -221,13 +223,13 @@
         </div>
       </a>
       <div class="contact-grid">
-        <div class="contact-info reveal">
+        <div class="contact-info reveal-left">
           <div class="contact-card"><i class="fa-solid fa-envelope"></i><div><span>Email</span><a href="mailto:edgaralcantara0881@gmail.com">edgaralcantara0881@gmail.com</a></div></div>
           <div class="contact-card"><i class="fa-brands fa-github"></i><div><span>GitHub</span><a href="https://github.com/EdgarAlcantara12" target="_blank" rel="noopener">github.com/EdgarAlcantara12</a></div></div>
           <div class="contact-card"><i class="fa-brands fa-linkedin"></i><div><span>LinkedIn</span><a href="https://www.linkedin.com/in/edgar-alcantara-b4911428a/" target="_blank" rel="noopener">linkedin.com/in/edgar-alcantara</a></div></div>
           <div class="contact-card"><i class="fa-solid fa-location-dot"></i><div><span>Ubicación</span><p>República Dominicana</p></div></div>
         </div>
-        <form class="contact-form reveal" id="contactForm" action="https://formspree.io/f/xpqowlog" method="POST" novalidate>
+        <form class="contact-form reveal-right" id="contactForm" action="https://formspree.io/f/xpqowlog" method="POST" novalidate>
           <div class="form-group"><label for="name">Nombre</label><input type="text" id="name" name="name" placeholder="Tu nombre" required /></div>
           <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" placeholder="tu@email.com" required /></div>
           <div class="form-group"><label for="subject">Asunto</label><input type="text" id="subject" name="subject" placeholder="Asunto del mensaje" /></div>
